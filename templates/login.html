@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+  <form method="post">
+    <input type="text" name="email">
+    <input type="password" name="password">
+    <input type="submit" value="Log In">
+  </form>
+    {% for message in get_flashed_messages() %}
+        <span>{{ message }}</span>
+    {% endfor %}
+</body>
+</html>

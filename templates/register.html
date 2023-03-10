@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+    <form method="post">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password">
+        <label for="password2">Repeat password</label>
+        <input type="password" name="password2" id="password2">
+        <input type="submit" value="register">
+    </form>
+    {% for message in get_flashed_messages() %}
+        <span>{{ message }}</span>
+    {% endfor %}
+</body>
+</html>
