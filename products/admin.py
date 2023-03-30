@@ -1,18 +1,26 @@
 from django.contrib import admin
-
-from products.models import Product, Category, Discount
+from products.models import Product, Category
+from django.utils.safestring import mark_safe
 
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'price', 'is_active', 'image_display')
+    filter_horizontal = ('category',)
+
+    @admin.display(description='Image')
+    def image_display(self, obj):
+        return mark_safe(
+            '<img src="{}" width=64, height="64" />'.format(obj.image.url)
+        )
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'image_display')
 
-
-@admin.register(Discount)
-class DiscountAdmin(admin.ModelAdmin):
-    pass
+    @admin.display(description='Image')
+    def image_display(self, obj):
+        return mark_safe(
+            '<img src="{}" width=64, height="64" />'.format(obj.image.url)
+        )
