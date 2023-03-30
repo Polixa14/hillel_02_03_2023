@@ -1,12 +1,11 @@
 from django.db import models
-from products.models import Product
 from project.constants import MAX_DIGITS, DECIMAL_PLACES
 from project.mixins.models import PKMixin
 
 
 class Stock(PKMixin):
     product = models.ForeignKey(
-        Product,
+        'products.Product',
         on_delete=models.SET_NULL,
         null=True
     )

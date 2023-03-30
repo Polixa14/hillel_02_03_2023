@@ -1,14 +1,12 @@
 from decimal import Decimal
 from django.db import models
-from payments.models import Discount
-from products.models import Product
 from project.constants import MAX_DIGITS, DECIMAL_PLACES
 from project.mixins.models import PKMixin
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 
 class Order(PKMixin):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     order_number = models.PositiveIntegerField()
     is_active = models.BooleanField(default=True)
     is_paid = models.BooleanField(default=False)
@@ -36,10 +34,14 @@ class Order(PKMixin):
 
 class OrderItem(PKMixin):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(
+        'products.Product',
+        on_delete=models.SET_NULL,
+        null=True
+    )
     is_active = models.BooleanField(default=True)
     quantity = models.PositiveIntegerField()
-    discounts = models.ManyToManyField(Discount, blank=True)
+    discounts = models.ManyToManyField('payments.Discount', blank=True)
     price = models.DecimalField(
         null=True,
         blank=True,
