@@ -1,20 +1,18 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from project.mixins.models import PKMixin
-from project.model_choices import Rating
+from django.core.validators import MaxValueValidator
 
 
 class Feedback(PKMixin):
     user = models.ForeignKey(
         get_user_model(),
-        on_delete=models.SET_NULL,
-        null=True
+        on_delete=models.CASCADE,
     )
     text = models.TextField()
     rating = models.PositiveSmallIntegerField(
-        choices=Rating.choices,
-        default=Rating.FIVE_STARS
+        validators=(MaxValueValidator(5),)
     )
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ('-created_at',)

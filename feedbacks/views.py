@@ -10,9 +10,11 @@ def feedbacks(request, *args, **kwargs):
         if request.user.is_authenticated:
             form = FeedbackModelForm(data=request.POST, user=request.user)
             if form.is_valid():
+                breakpoint()
                 form.save()
         else:
-            form.errors.update({'login_error': 'Login to leave feedback'})
+            form.cleaned_data = {}
+            form.add_error('text', 'Login to leave feedback')
     return render(request, 'feedbacks/index.html', context={
         'feedbacks': feedbacks_list,
         'form': form
