@@ -15,9 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from feedbacks.urls import urlpatterns as feedbacks_urlpatterns
 from products.urls import urlpatterns as products_urlpatterns
+from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('products/', include(products_urlpatterns))
+    path('products/', include(products_urlpatterns)),
+    path('feedbacks', include(feedbacks_urlpatterns))
 ]
+
+if settings.DEBUG:
+    from django.conf.urls.static import static
+
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
