@@ -43,12 +43,16 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'widget_tweaks',
+
     'products',
     'stocks',
     'payments',
     'orders',
     'feedbacks',
-    'accounts'
+    'accounts',
+    'main'
 ]
 
 MIDDLEWARE = [
@@ -111,8 +115,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGOUT_REDIRECT_URL = reverse_lazy('feedbacks')
-LOGIN_REDIRECT_URL = reverse_lazy('feedbacks')
+LOGOUT_REDIRECT_URL = reverse_lazy('main')
+LOGIN_REDIRECT_URL = reverse_lazy('main')
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -130,6 +134,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = ['static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

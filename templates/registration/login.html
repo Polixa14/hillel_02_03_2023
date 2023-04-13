@@ -1,14 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Log In</title>
-</head>
-<body>
-    <h1>Login</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Login">
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+    <div class="col-12 col-lg-6 offset-lg-3">
+        <h2>Login</h2>
+        <form method="post" id="form-login">
+            {% csrf_token %}
+            {% include 'parts/form.html' with form=form %}
+            <button type="submit" class="btn btn-orange" form="form-login">Login</button>
+        </form>
+    </div>
+{% endblock content %}
