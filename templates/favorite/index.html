@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}Your Favorite Products{% endblock title %}
+{% block content %}
+    <ul>
+        {% for product in favorite_products %}
+            <li>{{ product.product.name }}</li>
+        {% endfor %}
+    </ul>
+
+{% endblock content %}
