@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Singup{% endblock %}
+{% block content %}
+    <div class="col-12 col-lg-6 offset-lg-3">
+        <h2>Singup</h2>
+        <form method="post" id="form-singup">
+            {% csrf_token %}
+            {% include 'parts/form.html' with form=form %}
+            <button type="submit" class="btn btn-orange" form="form-singup">Singup</button>
+        </form>
+    </div>
+{% endblock content %}

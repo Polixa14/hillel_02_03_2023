@@ -1,0 +1,104 @@
+body {
+    font-family: 'Kanit', sans-serif;
+    font-weight: bold;
+}
+
+.shop-name {
+    font-family: 'Russo One', sans-serif;
+    font-weight: normal;
+    font-size: 1.5rem;
+}
+
+.header-background {
+    --bs-bg-opacity: 0;
+    background-color: #f2e3db;
+}
+
+.daily {
+    color: #e86a33;
+}
+
+.navbar-kanit {
+    font-size: 1rem;
+}
+
+.btn-menu {
+  color: black;
+  background-color: #f2e3db;
+  border-color: #f2e3db;
+}
+
+.btn-menu:hover {
+  color: black;
+  background-color: #edc6b1;
+  border-color: #edc6b1;
+  border-radius: 2rem;
+}
+
+.btn-menu:active {
+  color: black;
+  background-color: #edc6b1;
+  border-color: #edc6b1;
+  border-radius: 2rem;
+}
+
+.btn-menu:focus + .btn-menu, .btn-menu:focus {
+  color: black;
+  background-color: #edc6b1;
+  border-color: transparent;
+  border-radius: 2rem;
+}
+
+.btn-outline-search {
+  color: white;
+  background-color: #41644a;
+  border-color: #41644a;
+}
+
+.btn-outline-search:hover {
+  color: white;
+  background-color: #263a29;
+  border-color: #263a29;
+}
+
+.btn-orange {
+  color: #41644a;
+  border-color: #41644a;
+}
+
+.btn-orange:hover {
+  color: white;
+  background-color: #e86a33;
+  border-color: #e86a33;
+}
+
+.item-price {
+    font-size: 1.5rem;
+}
+
+/*feedbacks style*/
+
+.stars {
+    color: gold;
+}
+
+.date {
+    font-size: 0.7rem;
+}
+
+/*categories*/
+
+.category {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+}
+
+/*products*/
+
+.shoe-card {
+    width: 100%;
+    border-radius: unset
+}

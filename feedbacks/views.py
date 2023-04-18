@@ -1,21 +1,26 @@
-from django.shortcuts import render
+from django.urls import reverse_lazy
 from feedbacks.forms import FeedbackModelForm
 from feedbacks.models import Feedback
+from django.views.generic import FormView
 
 
-def feedbacks(request, *args, **kwargs):
-    feedbacks_list = Feedback.objects.iterator()
-    form = FeedbackModelForm(user=request.user)
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            form = FeedbackModelForm(data=request.POST, user=request.user)
-            if form.is_valid():
-                breakpoint()
-                form.save()
-        else:
-            form.cleaned_data = {}
-            form.add_error('text', 'Login to leave feedback')
-    return render(request, 'feedbacks/index.html', context={
-        'feedbacks': feedbacks_list,
-        'form': form
-    })
+class FeedBacksView(FormView):
+    template_name = 'feedbacks/index.html'
+    form_class = FeedbackModelForm
+    success_url = reverse_lazy('feedbacks')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['feedbacks'] = Feedback.objects.all()[:5]
+        if not self.request.user.is_authenticated:
+            context.pop('form')
+        return context
