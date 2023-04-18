@@ -9,6 +9,7 @@ from django.db import transaction
 
 fake = Faker()
 
+
 @transaction.atomic
 def start(apps, schema_editor):
     Product = apps.get_model('products', 'Product')

@@ -1,7 +1,15 @@
 from django.urls import path
-from products.views import ProductsView, CategoriesView
+from products.views import ProductsView, ProductDetailView, CategoriesView, \
+    ExportCsv, ImportCsv
 
 urlpatterns = [
     path('', ProductsView.as_view(), name='products'),
-    path('categories/', CategoriesView.as_view(), name='categories')
+    path('categories/', CategoriesView.as_view(), name='categories'),
+    path(
+        'details/<slug:slug>/',
+        ProductDetailView.as_view(),
+        name='details'
+    ),
+    path('exprot-csv/', ExportCsv.as_view(), name='export-csv'),
+    path('import-csv/', ImportCsv.as_view(), name='import-csv')
 ]

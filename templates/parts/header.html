@@ -61,6 +61,7 @@
                                 <a class="dropdown-item" href="{% url 'login' %}">Login</a>
                                 <a class="dropdown-item" href="{% url 'registration' %}">Singup</a>
                             {% else %}
+                                <a class="dropdown-item" href="{% url 'favorite' %}">Favorite</a>
                                 <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                             {% endif %}
                         </div>
