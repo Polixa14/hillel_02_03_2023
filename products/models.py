@@ -18,6 +18,16 @@ class Category(PKMixin):
     )
     image = models.ImageField(upload_to=upload_to)
     is_active = models.BooleanField(default=True)
+    slug = models.SlugField(max_length=255, unique=True, null=True, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        counter = 1
+        while Product.objects.filter(slug=self.slug).exists():
+            self.slug = f'{slugify(self.name)}-{counter}'
+            counter += 1
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

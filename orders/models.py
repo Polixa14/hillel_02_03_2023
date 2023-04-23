@@ -8,7 +8,10 @@ from project.model_choices import DiscountTypes
 
 class Order(PKMixin):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    order_number = models.PositiveIntegerField()
+    order_number = models.PositiveIntegerField(
+        null=True,
+        blank=True
+    )
     is_active = models.BooleanField(default=True)
     is_paid = models.BooleanField(default=False)
     total_price = models.DecimalField(
@@ -33,7 +36,7 @@ class Order(PKMixin):
     @property
     def calc_total_price(self):
         total_price = 0
-        for item in self.orderitem_set.iterator():
+        for item in self.order_items.iterator():
             total_price += item.price * item.quantity
         return total_price
 
@@ -59,11 +62,15 @@ class Order(PKMixin):
     def save(self, *args, **kwargs):
         self.total_price = self.calc_total_price
         self.total_price_with_discount = self.calc_price_with_discount
-        super(Order, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 class OrderItem(PKMixin):
-    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    order = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='order_items'
+    )
     product = models.ForeignKey(
         'products.Product',
         on_delete=models.SET_NULL,
@@ -84,3 +91,6 @@ class OrderItem(PKMixin):
 
     def __str__(self):
         return f'{self.product.name} {self.quantity}'
+
+    class Meta:
+        ordering = ('-created_at',)

@@ -21,17 +21,17 @@ class ImportCSVForm(forms.Form):
         csv_file = self.cleaned_data['file']
         reader = csv.DictReader(StringIO(csv_file.read().decode('utf-8')))
         for product in reader:
-            product_object = Product(
+            product_object, _ = Product.objects.update_or_create(
                     name=product.get('name'),
-                    description=product.get('description'),
-                    price=product.get('price'),
-                    sku=product.get('sku'),
-                    image=product.get('image'),
+                    defaults={
+                        'description': product.get('description'),
+                        'price': product.get('price'),
+                        'sku': product.get('sku'),
+                        'image': product.get('image')
+                    }
                 )
             for category_name in product.get('category').split(', '):
-                category, created = Category.objects.get_or_create(
+                category, _ = Category.objects.get_or_create(
                     name=re.sub(r"[^\w\s]", "", category_name)
                 )
-                category.save()
-                product_object.save()
                 product_object.category.add(category)

@@ -5,7 +5,7 @@
 
             <a class="navbar-brand shop-name" href="{% url 'main' %}">
                 <svg width="40" height="40" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <image xlink:href="{% static 'media/logo.svg' %}" width="40" height="40"/>
+                    <image xlink:href="{% static 'images/logo.svg' %}" width="40" height="40"/>
                 </svg>
                 <span class="daily">DAILY</span>SNEAKERS
             </a>
@@ -53,7 +53,7 @@
                         <a class="btn-sm btn-menu dropdown-toggle" href="#"
                            role="button" data-bs-toggle="dropdown">
                             <svg width="32" height="32" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <image style="margin: auto" xlink:href="{% static 'media/user_logo.svg' %}" width="32" height="32"/>
+                                <image style="margin: auto" xlink:href="{% static 'images/user_logo.svg' %}" width="32" height="32"/>
                             </svg>
                         </a>
                         <div class="dropdown-menu">
@@ -66,13 +66,10 @@
                             {% endif %}
                         </div>
                     </li>
-                    {#                            Поменять линк на корзину #}
-                    <a class="btn-sm m-3 btn-menu" href="{% url 'main' %}">
+                    <a class="btn-sm m-3 btn-menu" href="{% url 'cart' %}">
                         <svg width="32" height="32" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <image xlink:href="{% static 'media/cart.svg' %}" width="32" height="32"/>
+                            <image xlink:href="{% static 'images/cart.svg' %}" width="32" height="32"/>
                         </svg>
                     </a>
-            </div>
-        </div>
     </nav>
 </header>
