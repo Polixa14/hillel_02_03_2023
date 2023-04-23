@@ -20,6 +20,8 @@ from feedbacks.urls import urlpatterns as feedbacks_urlpatterns
 from products.urls import urlpatterns as products_urlpatterns
 from main.urls import urlpatterns as main_urlpatterns
 from favorites.urls import urlpatterns as favorite_urlpatterns
+from orders.urls import urlpatterns as orders_urlpatterns
+from payments.urls import urlpatterns as payments_urlpatterns
 from django.conf import settings
 
 urlpatterns = [
@@ -28,6 +30,8 @@ urlpatterns = [
     path('feedbacks/', include(feedbacks_urlpatterns)),
     path('accounts/', include(accounts_urlpatterns)),
     path('favorite/', include(favorite_urlpatterns)),
+    path('orders/', include(orders_urlpatterns)),
+    path('payments/', include(payments_urlpatterns)),
     path('', include(main_urlpatterns))
 ]
 
@@ -36,3 +40,6 @@ if settings.DEBUG:
 
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)
+
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)

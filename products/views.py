@@ -1,5 +1,6 @@
 import csv
-from django.views.generic import TemplateView, DetailView, View, FormView
+from django.views.generic import TemplateView, DetailView, View, FormView, \
+    ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
@@ -9,13 +10,11 @@ from products.forms import ImportCSVForm
 from django.http import HttpResponse
 
 
-class ProductsView(TemplateView):
+class ProductsView(ListView):
+    model = Product
     template_name = 'products/index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['products'] = Product.objects.iterator()
-        return context
+    context_object_name = 'products'
+    paginate_by = 20
 
 
 class ProductDetailView(DetailView):
@@ -29,6 +28,7 @@ class ProductDetailView(DetailView):
             context['user_favorites'] = \
                 [product.product.sku for product
                  in FavoriteProduct.objects.filter(user=self.request.user)]
+
         return context
 
 
@@ -38,6 +38,18 @@ class CategoriesView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.iterator()
+        return context
+
+
+class CategoryProductsView(TemplateView):
+    template_name = 'products/category_products.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['category'] = Category.objects.get(slug=self.kwargs['slug'])
+        context['products'] = Product.objects.filter(
+            category=context['category']
+        )
         return context
 
 

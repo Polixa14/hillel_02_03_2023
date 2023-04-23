@@ -1,10 +1,15 @@
 from django.urls import path
 from products.views import ProductsView, ProductDetailView, CategoriesView, \
-    ExportCsv, ImportCsv
+    ExportCsv, ImportCsv, CategoryProductsView
 
 urlpatterns = [
     path('', ProductsView.as_view(), name='products'),
     path('categories/', CategoriesView.as_view(), name='categories'),
+    path(
+        'categories/<slug:slug>/',
+        CategoryProductsView.as_view(),
+        name='category_products'
+    ),
     path(
         'details/<slug:slug>/',
         ProductDetailView.as_view(),

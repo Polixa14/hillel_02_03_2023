@@ -7,13 +7,6 @@ from project.model_choices import DiscountTypes
 
 class Discount(PKMixin):
 
-    CASH_DISCOUNT = 0
-    PERCENT_DISCOUNT = 1
-    DISCOUNT_CHOICES = (
-        (CASH_DISCOUNT, 'Cash discount'),
-        (PERCENT_DISCOUNT, 'Percentage discount')
-    )
-
     amount = models.DecimalField(
         max_digits=MAX_DIGITS,
         decimal_places=DECIMAL_PLACES

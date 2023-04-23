@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'feedbacks',
     'accounts',
     'main',
-    'favorites'
+    'favorites',
+    'tracking'
 ]
 
 MIDDLEWARE = [
@@ -64,6 +65,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'project.middlewares.TrackingMiddleware'
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -135,8 +137,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = ['static']
-
+STATIC_ROOT = 'static_files'
+STATICFILES_DIRS = ['assets']
+MEDIA_URL = 'media/'
+MEDIA_ROOT = 'media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

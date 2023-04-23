@@ -105,3 +105,38 @@ body {
 .control-code {
     color: grey;
 }
+
+/*cart*/
+
+.cart-img {
+    height: 100px;
+    width: 100px;
+}
+
+.quantity {
+    width: 3rem;
+}
+
+.trash {
+    width: 16px;
+    height: 16px;
+}
+
+.discount {
+    width: 7rem;
+}
+
+.without-discount {
+    text-decoration: line-through;
+    color: dimgray;
+    font-size: 0.8rem;
+}
+
+.with-discount {
+    color: red;
+}
+
+.btn-quantity {
+    height: 100%;
+    padding: 0.1rem;
+}
