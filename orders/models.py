@@ -59,11 +59,6 @@ class Order(PKMixin):
                         self.total_price - self.discount.amount
         return price_with_discount
 
-    def save(self, *args, **kwargs):
-        self.total_price = self.calc_total_price
-        self.total_price_with_discount = self.calc_price_with_discount
-        super().save(*args, **kwargs)
-
 
 class OrderItem(PKMixin):
     order = models.ForeignKey(
