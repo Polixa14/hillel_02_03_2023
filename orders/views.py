@@ -1,7 +1,6 @@
 from django.urls import reverse_lazy
 from orders.models import Order, OrderItem
 from django.views.generic import TemplateView, RedirectView, DeleteView
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from products.models import Product

@@ -1,10 +1,10 @@
 import csv
-from django.views.generic import TemplateView, DetailView, View, FormView, ListView
+from django.views.generic import TemplateView, DetailView, View, FormView, \
+    ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from favorites.models import FavoriteProduct
-from orders.models import Order
 from products.models import Category, Product
 from products.forms import ImportCSVForm
 from django.http import HttpResponse
