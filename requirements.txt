@@ -5,3 +5,4 @@ django-environ==0.10.0
 Pillow==9.4.0
 faker==18.4.0
 django-widget-tweaks==1.4.12
+django-multi-form-view==2.0.1

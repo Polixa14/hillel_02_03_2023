@@ -30,7 +30,7 @@ def start(apps, schema_editor):
         )
         category = Category.objects.\
             filter(name='sneakers').values_list('id', flat=True).first()
-        product.category.add(str(category))
+        product.category.add(category)
 
 
 def end():

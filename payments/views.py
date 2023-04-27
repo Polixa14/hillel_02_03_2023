@@ -4,12 +4,15 @@ from orders.models import Order
 
 
 class PaymentView(RedirectView):
+    url = reverse_lazy('main')
 
-    def get_redirect_url(self, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         order = Order.objects.get(
-            user=self.request.user,
+            is_active=True,
             is_paid=False,
+            user=self.request.user
         )
         order.is_paid = True
+        order.is_active = False
         order.save()
-        return reverse_lazy('main')
+        return self.get(request, *args, **kwargs)
