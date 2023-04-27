@@ -1,16 +1,16 @@
 from django.urls import reverse_lazy
-from orders.models import Order, OrderItem
-from django.views.generic import TemplateView, RedirectView, DeleteView
+from orders.models import OrderItem
+from django.views.generic import FormView, DeleteView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from products.models import Product
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import redirect
-from payments.models import Discount
+from orders.mixins import GetOrderMixin
+from orders.forms import UpdateQuantityCartForm, CartForm, AddProductToCartForm
 
 
-class CartView(TemplateView):
+class CartView(GetOrderMixin, FormView):
     template_name = 'orders/cart.html'
+    success_url = reverse_lazy('cart')
+    form_class = CartForm
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -18,61 +18,49 @@ class CartView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        try:
-            order = Order.objects.get(
-                user=self.request.user,
-                is_paid=False
-            )
-            context.update(
-                {
-                    'order': order,
-                    'order_items': OrderItem.objects.filter(order=order),
-                    'discounts': Discount.objects.filter(is_active=True)
-                }
-            )
-        except ObjectDoesNotExist:
-            pass
+        context.update({
+            'order': self.get_order(),
+        })
         return context
 
-    def post(self, request, *args, **kwargs):
-        quantity = request.POST.get('quantity')
-        order_item_id = request.POST.get('order_item_id')
-        discount_code = request.POST.get('discount_code')
-        order = self.get_context_data(**kwargs).get('order')
-        try:
-            order.discount = Discount.objects.get(code=discount_code)
-            order.save()
-        except ObjectDoesNotExist:
-            pass
-        if order_item_id:
-            order_item = OrderItem.objects.get(id=order_item_id)
-            order_item.quantity = quantity
-            order_item.save()
-            order_item.order.save()
-        return redirect('cart', *args, **kwargs)
+    def form_valid(self, form):
+        form.instance = self.get_order()
+        form.save()
+        return super().form_valid(form)
 
 
-class AddProductToCartView(RedirectView):
+class UpdateQuantityCartView(GetOrderMixin, FormView):
+    template_name = 'orders/cart.html'
+    form_class = UpdateQuantityCartForm
+    success_url = reverse_lazy('cart')
 
-    def get_redirect_url(self, slug, *args, **kwargs):
-        order, created = Order.objects.get_or_create(
-            user=self.request.user,
-            is_paid=False,
-        )
-        product = Product.objects.get(slug=slug)
-        if created:
-            order.order_number = \
-                Order.objects.filter(user=self.request.user).count()
-            order.save()
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
-        if not OrderItem.objects.filter(order=order, product=product).exists():
-            OrderItem.objects.create(
-                order=order,
-                product=product,
-                price=product.price,
-                quantity=1
-            )
-        return reverse_lazy('cart')
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'order_item_id': self.request.POST.get('order_item_id')
+        })
+        return kwargs
+
+
+class AddProductToCartView(GetOrderMixin, FormView):
+    template_name = 'products/product_detail.html'
+    form_class = AddProductToCartForm
+    success_url = reverse_lazy('cart')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({
+            'order': self.get_order()
+        })
+        return kwargs
 
 
 class OrderItemDeleteView(DeleteView):

@@ -8,7 +8,7 @@
             <div class="col col-lg-6">
                 <ul class="list-group">
                     <h3>Cart</h3>
-                    {% for order_item in order_items %}
+                    {% for order_item in order.order_items.all %}
                             <li class="list-group-item">
                                 <img class="float-start cart-img" src="{{ order_item.product.image.url }}" alt="{{ order_item.product.name }}">
                                 <span class="float-start">{{ order_item.product.name }}</span>
@@ -21,9 +21,9 @@
                             </li>
                             <li class="list-group-item">
                                 <div class="float-start">
-                                    <form method="post">
+                                    <form method="post" action="{% url 'update_quantity' %}">
                                         {% csrf_token %}
-                                        <input class="float-start quantity" type="number" name="quantity" min="1" value="{{ order_item.quantity }}">
+                                        <input class="quantity" type="number" name="quantity" value="{{ order_item.quantity }}">
                                         <input type="hidden" name="order_item_id" value="{{ order_item.id }}">
                                         <input class="btn btn-orange btn-quantity" type="submit" value="change quantity">
                                     </form>
@@ -31,35 +31,46 @@
                                 <span class="float-end">{{ order_item.price }}$</span>
                             </li>
                     {% endfor %}
-                    {% if order_items %}
-                        <li class="list-group-item ">
-                            <div>
-                                <form method="post" class="d-flex justify-content-end">
-                                {% csrf_token %}
-                                    <span class="me-auto">Chose discount</span>
-                                    <select class="discount form-select" aria-label="discount" name="discount_code">
-                                    <option selected>Discount</option>
-                                    {% for discount in discounts %}
-                                        <option value="{{ discount.code }}">{{ discount.code }}</option>
-                                    {% endfor %}
-                                    </select>
-                                    <input type="submit" value="ok">
-                                </form>
-                            </div>
+                    {% if order.order_items.exists %}
+                        {% if not order.discount %}
+                            <li class="list-group-item ">
+                                <div>
+                                    <form method="post" class="d-flex justify-content-end">
+                                    {% csrf_token %}
+                                        <span class="me-auto">Input discount code</span>
+                                        {% for field in form %}
+                                            {{ field }}
+                                        {% endfor %}
+                                        <input class="btn btn-orange btn-quantity" type="submit" value="apply">
+                                    </form>
+                                </div>
+                            </li>
+                        {% endif %}
+                        <li class="list-group-item">
+                            {% if order.discount %}
+                                <div class="mt-auto d-flex justify-content-end">
+                                    <span class="me-auto">Total price</span>
+                                    <span class="without-discount">{{ order.total_price }}</span>
+                                    <span class="with-discount">{{ order.total_price_with_discount }}$</span>
+                                </div>
+                            {% else %}
+                                <div class="mt-auto d-flex justify-content-end">
+                                    <span class="me-auto">Total price</span>
+                                    <span>{{ order.total_price }}$</span>
+                                </div>
+                            {% endif %}
                         </li>
                         <li class="list-group-item">
-                            <div class="mt-auto d-flex justify-content-end">
-                                <span class="me-auto">Total price</span>
-                                <span class="without-discount">{{ order.total_price }}</span>
-                                <span class="with-discount">{{ order.total_price_with_discount }}$</span>
-                            </div>
-                        </li>
-                        <li class="list-group-item">
-                            <a href="{% url 'payment' %}"><button class="btn btn-orange">Pay</button></a>
+                            <form method="post" action="{% url 'payment' %}">{% csrf_token %}<button class="btn btn-orange">Pay</button></a></form>
                         </li>
                     {% else %}
                         <p>Cart is empty</p>
                     {% endif %}
+                <div class="d-flex justify-content-start">
+                    {% for field, error in form.errors.items %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
                 </ul>
             </div>
         </div>

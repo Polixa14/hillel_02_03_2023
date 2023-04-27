@@ -7,9 +7,6 @@ class FeedbackModelForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ('user', 'text', 'rating')
-        # widgets = {
-        #     'rating': forms.RadioSelect(attrs={'class': 'feedback'}),
-        # }
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
