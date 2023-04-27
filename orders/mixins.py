@@ -8,8 +8,4 @@ class GetOrderMixin:
             is_paid=False,
             user=self.request.user
         )
-        if created:
-            order_num = Order.objects.count()
-            order.order_number = order_num
-            order.save()
         return order

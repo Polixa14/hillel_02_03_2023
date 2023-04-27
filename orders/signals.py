@@ -5,6 +5,8 @@ from orders.models import Order, OrderItem
 
 @receiver(pre_save, sender=Order)
 def pre_save_order_signal(sender, instance, **kwargs):
+    if not instance.order_number:
+        instance.order_number = Order.objects.count() + 1
     instance.total_price = instance.calc_total_price
     instance.total_price_with_discount = instance.calc_price_with_discount
 
