@@ -38,13 +38,6 @@ class UpdateQuantityCartView(GetOrderMixin, FormView):
         form.save()
         return super().form_valid(form)
 
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs.update({
-            'order_item_id': self.request.POST.get('order_item_id')
-        })
-        return kwargs
-
 
 class AddProductToCartView(GetOrderMixin, FormView):
     template_name = 'products/product_detail.html'

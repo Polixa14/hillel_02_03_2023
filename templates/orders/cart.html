@@ -68,7 +68,7 @@
                     {% endif %}
                 <div class="d-flex justify-content-start">
                     {% for field, error in form.errors.items %}
-                        {{ error }}
+                        {{ field }}{{ error }}
                     {% endfor %}
                 </div>
                 </ul>
