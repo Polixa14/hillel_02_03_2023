@@ -24,7 +24,7 @@
                                     <form method="post" action="{% url 'update_quantity' %}">
                                         {% csrf_token %}
                                         <input class="quantity" type="number" name="quantity" value="{{ order_item.quantity }}">
-                                        <input type="hidden" name="order_item_id" value="{{ order_item.id }}">
+                                        <input type="hidden" name="order_item" value="{{ order_item.id }}">
                                         <input class="btn btn-orange btn-quantity" type="submit" value="change quantity">
                                     </form>
                                 </div>

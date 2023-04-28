@@ -7,20 +7,21 @@ from products.models import Product
 
 class UpdateQuantityCartForm(forms.Form):
     quantity = forms.IntegerField()
-    order_item_id = forms.UUIDField()
+    order_item = forms.UUIDField()
 
     def save(self):
-        self.order_item.quantity = self.cleaned_data.get('quantity')
-        self.order_item.save()
+        order_item = self.cleaned_data.get('order_item')
+        order_item.quantity = self.cleaned_data.get('quantity')
+        order_item.save()
 
-    def clean_order_item_id(self):
+    def clean_order_item(self):
         try:
-            self.order_item = OrderItem.objects.get(
-                id=self.cleaned_data.get('order_item_id')
+            order_item = OrderItem.objects.get(
+                id=self.cleaned_data.get('order_item')
             )
         except OrderItem.DoesNotExist:
             raise ValidationError('Invalid Order Item ID')
-        return self.order_item
+        return order_item
 
 
 class CartForm(forms.Form):
