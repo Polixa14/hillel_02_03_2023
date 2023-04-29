@@ -6,3 +6,5 @@ Pillow==9.4.0
 faker==18.4.0
 django-widget-tweaks==1.4.12
 django-multi-form-view==2.0.1
+celery[redis]==5.2.7
+django-celery-results==2.5.0

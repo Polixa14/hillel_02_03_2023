@@ -1,9 +1,7 @@
 from django import forms
-from products.models import Product, Category
+from products.models import Product
 from django.core.validators import FileExtensionValidator
-from io import StringIO
-import csv
-import re
+from products.tasks import import_csv_task
 
 
 class ProductModelForm(forms.ModelForm):
@@ -19,19 +17,5 @@ class ImportCSVForm(forms.Form):
 
     def clean_file(self):
         csv_file = self.cleaned_data['file']
-        reader = csv.DictReader(StringIO(csv_file.read().decode('utf-8')))
-        for product in reader:
-            product_object, _ = Product.objects.update_or_create(
-                    name=product.get('name'),
-                    defaults={
-                        'description': product.get('description'),
-                        'price': product.get('price'),
-                        'sku': product.get('sku'),
-                        'image': product.get('image')
-                    }
-                )
-            for category_name in product.get('category').split(', '):
-                category, _ = Category.objects.get_or_create(
-                    name=re.sub(r"[^\w\s]", "", category_name)
-                )
-                product_object.category.add(category)
+        file_content = csv_file.read().decode('utf-8')
+        import_csv_task.delay(file_content)

@@ -16,7 +16,11 @@
                     <span class="control-code me-0 d-flex justify-content-end">Article: {{ product.sku }}</span>
                 </div>
                 <div class="mt-2 d-flex justify-content-start">
-                    <a href="{% url 'add_to_favorite' product.slug %}" class="btn btn-orange mt-auto">{% if product.sku not in user_favorites %}Add to favorite{% else %}Remove from favorites{% endif %}</a>
+                    <form method="post" action="{% url 'add_to_favorite' product.slug %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="product" value="{{ product.id }}">
+                        <button type="submit" class="btn btn-orange mt-auto">{% if product.sku not in user_favorites %}Add to favorite{% else %}Remove from favorites{% endif %}</button>
+                    </form>
                     <form method="post" action="{% url 'add_to_cart' %}">
                         {% csrf_token %}
                         <input type="hidden" name="product" value="{{ product.id }}">
