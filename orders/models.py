@@ -81,7 +81,7 @@ class OrderItem(PKMixin):
     )
 
     def save(self, *args, **kwargs):
-        self.price = self.product.price
+        self.price = self.product.price_in_uah
         super(OrderItem, self).save(*args, **kwargs)
 
     def __str__(self):

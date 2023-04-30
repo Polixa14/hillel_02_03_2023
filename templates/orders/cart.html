@@ -28,7 +28,7 @@
                                         <input class="btn btn-orange btn-quantity" type="submit" value="change quantity">
                                     </form>
                                 </div>
-                                <span class="float-end">{{ order_item.price }}$</span>
+                                <span class="float-end">{{ order_item.price }}₴</span>
                             </li>
                     {% endfor %}
                     {% if order.order_items.exists %}
@@ -51,12 +51,12 @@
                                 <div class="mt-auto d-flex justify-content-end">
                                     <span class="me-auto">Total price</span>
                                     <span class="without-discount">{{ order.total_price }}</span>
-                                    <span class="with-discount">{{ order.total_price_with_discount }}$</span>
+                                    <span class="with-discount">{{ order.total_price_with_discount }}₴</span>
                                 </div>
                             {% else %}
                                 <div class="mt-auto d-flex justify-content-end">
                                     <span class="me-auto">Total price</span>
-                                    <span>{{ order.total_price }}$</span>
+                                    <span>{{ order.total_price }}₴</span>
                                 </div>
                             {% endif %}
                         </li>
