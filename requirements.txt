@@ -1,4 +1,4 @@
-django==4.1.7
+django==4.2.1
 ipdb==0.13.13
 flake8==6.0.0
 django-environ==0.10.0
@@ -10,3 +10,4 @@ celery[redis]==5.2.7
 django-celery-results==2.5.0
 django-extensions==3.2.1
 django-celery-beat==2.5.0
+pymemcache==4.0.0

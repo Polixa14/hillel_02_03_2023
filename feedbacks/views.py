@@ -2,6 +2,7 @@ from django.urls import reverse_lazy
 from feedbacks.forms import FeedbackModelForm
 from feedbacks.models import Feedback
 from django.views.generic import FormView
+from django.core.cache import cache
 
 
 class FeedBacksView(FormView):
@@ -20,7 +21,11 @@ class FeedBacksView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['feedbacks'] = Feedback.objects.all()[:5]
+        feedbacks = cache.get('feedbacks')
+        if not feedbacks:
+            feedbacks = Feedback.objects.all()
+            cache.set('feedbacks', feedbacks)
+        context['feedbacks'] = feedbacks
         if not self.request.user.is_authenticated:
             context.pop('form')
         return context
