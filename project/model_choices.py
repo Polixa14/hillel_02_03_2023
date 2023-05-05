@@ -10,3 +10,7 @@ class CurrencyChoices(TextChoices):
     UAH = 'UAH', 'UAH'
     USD = 'USD', 'USD'
     EUR = 'EUR', 'EUR'
+
+
+class FeedbacksCacheKeys(TextChoices):
+    FEEDBACKS = 'feedbacks', 'Feedbacks'

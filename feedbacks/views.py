@@ -3,6 +3,7 @@ from feedbacks.forms import FeedbackModelForm
 from feedbacks.models import Feedback
 from django.views.generic import FormView
 from django.core.cache import cache
+from project.model_choices import FeedbacksCacheKeys
 
 
 class FeedBacksView(FormView):
@@ -21,10 +22,10 @@ class FeedBacksView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        feedbacks = cache.get('feedbacks')
+        feedbacks = cache.get(FeedbacksCacheKeys.FEEDBACKS)
         if not feedbacks:
             feedbacks = Feedback.objects.all()
-            cache.set('feedbacks', feedbacks)
+            cache.set(FeedbacksCacheKeys.FEEDBACKS, feedbacks)
         context['feedbacks'] = feedbacks
         if not self.request.user.is_authenticated:
             context.pop('form')
