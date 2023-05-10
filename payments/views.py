@@ -1,6 +1,8 @@
+from django.contrib import messages
 from django.views.generic import RedirectView
 from django.urls import reverse_lazy
 from orders.models import Order
+from django.utils.translation import gettext_lazy as _
 
 
 class PaymentView(RedirectView):
@@ -15,4 +17,5 @@ class PaymentView(RedirectView):
         order.is_paid = True
         order.is_active = False
         order.save()
+        messages.success(self.request, _('Order paid'))
         return self.get(request, *args, **kwargs)

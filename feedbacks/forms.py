@@ -1,6 +1,7 @@
 from django import forms
 from django.utils.html import strip_tags
 from feedbacks.models import Feedback
+from django.utils.translation import gettext_lazy as _
 
 
 class FeedbackModelForm(forms.ModelForm):
@@ -14,7 +15,7 @@ class FeedbackModelForm(forms.ModelForm):
         if user:
             self.fields['user'].widget = forms.HiddenInput()
             self.fields['user'].initial = user
-            self.fields['rating'].help_text = 'Choose rating'
+            self.fields['rating'].help_text = _('Choose rating')
 
     def clean_text(self):
         text = self.cleaned_data.get('text')

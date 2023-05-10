@@ -99,11 +99,40 @@ body {
 
 .shoe-card {
     width: 100%;
-    border-radius: unset
+    border-radius: 5px;
+    border-color: transparent;
+}
+.card-own {
+    width: 300px;
+    margin: 0.2rem 0.8rem;
+    border-style: solid;
+    border-width: thin;
+    border-color: transparent;
+}
+
+.card-own:hover {
+    border-style: solid;
+    border-color: lightgrey;
+    border-width: thin;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px lightgrey;
+    width: 300px;
+    margin: 0.2rem 0.8rem;
 }
 
 .control-code {
     color: grey;
+}
+
+.card-body-new {
+    -webkit-box-flex: 1;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem;
+    border-top-style: solid;
+    border-top-width: thin;
+    border-top-color: lightgrey;
+    margin: 0 0.3rem 0 0.3rem;
 }
 
 /*cart*/

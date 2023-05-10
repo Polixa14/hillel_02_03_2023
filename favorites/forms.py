@@ -3,6 +3,7 @@ from favorites.models import FavoriteProduct
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from products.models import Product
+from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 
@@ -18,7 +19,7 @@ class AddProductToFavoriteForm(forms.Form):
         try:
             product = Product.objects.get(id=self.cleaned_data.get('product'))
         except Product.DoesNotExist:
-            raise ValidationError('Invalid product ID')
+            raise ValidationError(_('Invalid product ID'))
         favorite_product, created = FavoriteProduct.objects.get_or_create(
             user=self.user,
             product=product

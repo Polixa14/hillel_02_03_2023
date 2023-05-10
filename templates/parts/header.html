@@ -1,4 +1,5 @@
 {% load static %}
+{% load i18n %}
 <header class="py-1 mb-3 border-bottom header-background">
     <nav class="navbar navbar-expand-lg bg-body-tertiary header-background">
         <div class="container-fluid header-background">
@@ -18,26 +19,26 @@
             <div class="collapse navbar-collapse navbar-kanit" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item btn-menu">
-                        <a class="nav-link active" aria-current="page" href="{% url 'products' %}">Products</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'products' %}">{% translate 'Products' %}</a>
                     </li>
                     <li class="nav-item btn-menu">
-                        <a class="nav-link active" aria-current="page" href="#">About us</a>
+                        <a class="nav-link active" aria-current="page" href="#">{% translate 'About us' %}</a>
                     </li>
                     <li class="nav-item btn-menu">
-                        <a class="nav-link active" href="#">Contacts</a>
+                        <a class="nav-link active" href="#">{% translate 'Contacts' %}</a>
                     </li>
                     <li class="nav-item btn-menu">
-                        <a class="nav-link active" href="{% url 'feedbacks' %}">Feedbacks</a>
+                        <a class="nav-link active" href="{% url 'feedbacks' %}">{% translate 'Feedbacks' %}</a>
                     </li>
                     <li class="btn-group me-auto">
                         <a class="btn btn-menu dropdown-toggle me-2 nav-link active" href="#"
                            role="button" data-bs-toggle="dropdown"
                            aria-expanded="false">
-                            Catalogue
+                            {% translate 'Catalogue' %}
                         </a>
                         <div class="dropdown-menu flex-column">
                             {#                            Добавить #}
-                            <a class="ms-2" href={% url 'categories' %}>Categories</a>
+                            <a class="ms-2" href={% url 'categories' %}>{% translate 'Categories' %}</a>
                         </div>
                     </li>
                 </ul>
@@ -45,9 +46,24 @@
                     {% csrf_token %}
                     <input class="form-control me-3 w-100" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-search me-3" type="submit" name="search" form="search-form">
-                        Search
+                        {% translate 'Search' %}
                     </button>
                 </form>
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ redirect_to }}">
+                        <select name="language">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="Go">
+                    </form>
                 {#                    Поменять ссылку с мейн на лк#}
                     <li class="btn-group">
                         <a class="btn-sm btn-menu dropdown-toggle" href="#"
@@ -58,11 +74,12 @@
                         </a>
                         <div class="dropdown-menu">
                             {% if not request.user.is_authenticated %}
-                                <a class="dropdown-item" href="{% url 'login' %}">Login</a>
-                                <a class="dropdown-item" href="{% url 'registration' %}">Singup</a>
+                                <a class="dropdown-item" href="{% url 'login' %}">{% translate 'Login' %}</a>
+                                <a class="dropdown-item" href="{% url 'registration' %}">{% translate 'Singup' %}</a>
                             {% else %}
-                                <a class="dropdown-item" href="{% url 'favorite' %}">Favorite</a>
-                                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                                <a class="dropdown-item" href="{% url 'favorite' %}">{% translate 'Favorite' %}</a>
+                                <a class="dropdown-item" href="{% url 'edit_profile' %}">{% translate 'Edit Profile' %}</a>
+                                <a class="dropdown-item" href="{% url 'logout' %}">{% translate 'Logout' %}</a>
                             {% endif %}
                         </div>
                     </li>

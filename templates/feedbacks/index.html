@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
-{% block title %}Feedbacks{% endblock title %}
+{% load i18n %}
+{% block title %}{% translate 'Feedbacks' %}{% endblock title %}
 {% block content %}
     <div class="container text-center">
         <div class="row">
             <div class="col-12 col-lg-6">
                 <ul class="list-group">
-                    <h3>Feedbacks</h3>
+                    <h3>{% translate 'Feedbacks' %}</h3>
                     {% for feedback in feedbacks %}
                         <ul class="list-group mb-2">
                             <li class="list-group-item">
@@ -31,39 +32,19 @@
             </div>
             <div class="col-12 col-lg-6">
                 {% if request.user.is_authenticated %}
-                <h3>Leave your feedback</h3>
+                <h3>{% translate 'Leave your feedback' %}</h3>
                 <form method="post" id="form-feedback">
                     {% csrf_token %}
                     {% include 'parts/form.html' with form=form %}
-                    <button type="submit" class="btn btn-orange" form="form-feedback">Submit</button>
+                    <button type="submit" class="btn btn-orange" form="form-feedback">{% translate 'Submit' %}</button>
                 </form>
                 {% else %}
-                    <h3>Login to leave a feedback</h3>
-                    <a href={% url 'login' %}><button class="btn btn-orange me-3">Login</button></a>
-                    <a href={% url 'registration' %}><button class="btn btn-orange me-3">Sing Up</button></a>
+                    <h3>{% translate 'Login to leave a feedback' %}</h3>
+                    <a href={% url 'login' %}><button class="btn btn-orange me-3">{% translate 'Login' %}</button></a>
+                    <a href={% url 'registration' %}><button class="btn btn-orange me-3">{% translate 'Sing Up' %}</button></a>
                 {% endif %}
             </div>
         </div>
     </div>
 {% endblock content %}
 
-
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>Feedbacks</title>#}
-{#</head>#}
-{#<body>#}
-{#{%  for feedback in feedbacks %}#}
-{#    <p>{{ feedback.user }} leave comment:</p>#}
-{#    <p>{{ feedback.text }}</p>#}
-{#    <p>Rating: {{ feedback.rating }}</p>#}
-{#{% endfor %}#}
-{#<form method="post">#}
-{#    {% csrf_token %}#}
-{#    {{ form.as_p }}#}
-{#    <input type="submit" value="Save">#}
-{#</form>#}
-{#</body>#}
-{#</html>#}

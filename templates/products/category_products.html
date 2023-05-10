@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block title %}{{ category.name }}{% endblock title %}
 {% block content %}
     <div class="container text-center">
@@ -12,7 +13,7 @@
                             <p class="card-text text-truncate">{{ product.description }}</p>
                             <div class="mt-auto align-items-end d-flex justify-content-end">
                                 <span class="me-auto item-price">{{ product.price }}$</span>
-                                <a href="{% url 'details' product.slug %}" class="btn btn-orange mt-auto d-flex justify-content-end">Details</a>
+                                <a href="{% url 'details' product.slug %}" class="btn btn-orange mt-auto d-flex justify-content-end">{% translate 'Details' %}</a>
                             </div>
                         </div>
                     </div>

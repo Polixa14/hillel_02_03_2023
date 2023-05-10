@@ -4,9 +4,11 @@ from project.constants import MAX_DIGITS, DECIMAL_PLACES
 from project.mixins.models import PKMixin
 from django.contrib.auth import get_user_model
 from project.model_choices import DiscountTypes
+from django_lifecycle import LifecycleModelMixin, hook, BEFORE_UPDATE,\
+    AFTER_SAVE, AFTER_DELETE
 
 
-class Order(PKMixin):
+class Order(LifecycleModelMixin, PKMixin):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     order_number = models.PositiveIntegerField(
         null=True,
@@ -33,7 +35,6 @@ class Order(PKMixin):
         null=True
     )
 
-    @property
     def calc_total_price(self):
         total_price = 0
         for item in self.order_items.iterator():
@@ -43,7 +44,6 @@ class Order(PKMixin):
     def __str__(self):
         return str(self.order_number)
 
-    @property
     def calc_price_with_discount(self):
         price_with_discount = self.total_price
         if self.discount and self.discount.is_valid:
@@ -59,8 +59,15 @@ class Order(PKMixin):
                         self.total_price - self.discount.amount
         return price_with_discount
 
+    @hook(BEFORE_UPDATE)
+    def pre_save_signal(self):
+        if not self.order_number:
+            self.order_number = Order.objects.count() + 1
+        self.total_price = self.calc_total_price()
+        self.total_price_with_discount = self.calc_price_with_discount()
 
-class OrderItem(PKMixin):
+
+class OrderItem(LifecycleModelMixin, PKMixin):
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
@@ -89,3 +96,8 @@ class OrderItem(PKMixin):
 
     class Meta:
         ordering = ('-created_at',)
+
+    @hook(AFTER_SAVE)
+    @hook(AFTER_DELETE)
+    def pre_post_save_signal(self):
+        self.order.save()

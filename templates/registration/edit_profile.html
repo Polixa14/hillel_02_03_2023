@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{% translate 'Edit Profile' %}{% endblock %}
+{% block content %}
+    <div class="col-12 col-lg-6 offset-lg-3">
+        <h2>{% translate 'Profile info' %}</h2>
+        <form method="post" id="form-login">
+            {% csrf_token %}
+            {% include 'parts/form.html' with form=form %}
+            <button type="submit" class="btn btn-orange" form="form-login">{% translate 'Confirm' %}</button>
+        </form>
+    </div>
+{% endblock content %}

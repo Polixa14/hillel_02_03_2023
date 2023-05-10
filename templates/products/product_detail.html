@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% load widget_tweaks %}
 {% block title %}{{ product.name }}{% endblock title %}
 {% block content %}
@@ -13,18 +14,18 @@
                 <p>{{ product.description }}</p>
                 <div class="mt-auto align-items-end d-flex justify-content-end">
                     <span class="me-auto item-price d-flex justify-content-start">{{ product.price_in_uah }}₴</span>
-                    <span class="control-code me-0 d-flex justify-content-end">Article: {{ product.sku }}</span>
+                    <span class="control-code me-0 d-flex justify-content-end">{% translate 'Article' %}: {{ product.sku }}</span>
                 </div>
                 <div class="mt-2 d-flex justify-content-start">
                     <form method="post" action="{% url 'add_to_favorite' product.slug %}">
                         {% csrf_token %}
                         <input type="hidden" name="product" value="{{ product.id }}">
-                        <button type="submit" class="btn btn-orange mt-auto">{% if product.sku not in user_favorites %}Add to favorite{% else %}Remove from favorites{% endif %}</button>
+                        <button type="submit" class="btn btn-orange mt-auto">{% if product.sku not in user_favorites %}{% translate 'Add to favorite' %}{% else %}{% translate 'Remove from favorites' %}{% endif %}</button>
                     </form>
                     <form method="post" action="{% url 'add_to_cart' %}">
                         {% csrf_token %}
                         <input type="hidden" name="product" value="{{ product.id }}">
-                        <button type="submit" class="btn btn-orange mt-auto">Add to cart</button>
+                        <button type="submit" class="btn btn-orange mt-auto">{% translate 'Add to cart' %}</button>
                     </form>
                 </div>
 

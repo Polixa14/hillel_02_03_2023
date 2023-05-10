@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}{{ product.name }}{% endblock title %}
+{% load i18n %}
+{% block title %}{% translate 'Cart' %}{% endblock title %}
 {% block content %}
 <div class="container text-center">
         <div class="row">
@@ -37,7 +38,7 @@
                                 <div>
                                     <form method="post" class="d-flex justify-content-end">
                                     {% csrf_token %}
-                                        <span class="me-auto">Input discount code</span>
+                                        <span class="me-auto">{% translate 'Input discount code' %}</span>
                                         {% for field in form %}
                                             {{ field }}
                                         {% endfor %}
@@ -49,22 +50,22 @@
                         <li class="list-group-item">
                             {% if order.discount %}
                                 <div class="mt-auto d-flex justify-content-end">
-                                    <span class="me-auto">Total price</span>
+                                    <span class="me-auto">{% translate 'Total price' %}</span>
                                     <span class="without-discount">{{ order.total_price }}</span>
                                     <span class="with-discount">{{ order.total_price_with_discount }}₴</span>
                                 </div>
                             {% else %}
                                 <div class="mt-auto d-flex justify-content-end">
-                                    <span class="me-auto">Total price</span>
+                                    <span class="me-auto">{% translate 'Total price' %}</span>
                                     <span>{{ order.total_price }}₴</span>
                                 </div>
                             {% endif %}
                         </li>
                         <li class="list-group-item">
-                            <form method="post" action="{% url 'payment' %}">{% csrf_token %}<button class="btn btn-orange">Pay</button></a></form>
+                            <form method="post" action="{% url 'payment' %}">{% csrf_token %}<button class="btn btn-orange">{% translate 'Pay' %}</button></a></form>
                         </li>
                     {% else %}
-                        <p>Cart is empty</p>
+                        <p>{% translate 'Cart is empty' %}</p>
                     {% endif %}
                 <div class="d-flex justify-content-start">
                     {% for field, error in form.errors.items %}

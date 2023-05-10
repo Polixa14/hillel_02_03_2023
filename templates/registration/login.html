@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
+{% load i18n %}
 {% block title %}Login{% endblock %}
 {% block content %}
     <div class="col-12 col-lg-6 offset-lg-3">
-        <h2>Login</h2>
+        <h2>{% translate 'Login' %}</h2>
         <form method="post" id="form-login">
             {% csrf_token %}
             {% include 'parts/form.html' with form=form %}
-            <button type="submit" class="btn btn-orange" form="form-login">Login</button>
+            <button type="submit" class="btn btn-orange" form="form-login">{% translate 'Login' %}</button>
         </form>
     </div>
 {% endblock content %}

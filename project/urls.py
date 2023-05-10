@@ -23,17 +23,24 @@ from favorites.urls import urlpatterns as favorite_urlpatterns
 from orders.urls import urlpatterns as orders_urlpatterns
 from payments.urls import urlpatterns as payments_urlpatterns
 from django.conf import settings
+from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
+i18n_urlpatterns = [
     path('products/', include(products_urlpatterns)),
     path('feedbacks/', include(feedbacks_urlpatterns)),
     path('accounts/', include(accounts_urlpatterns)),
     path('favorite/', include(favorite_urlpatterns)),
     path('orders/', include(orders_urlpatterns)),
     path('payments/', include(payments_urlpatterns)),
-    path('', include(main_urlpatterns))
+    path('', include(main_urlpatterns)),
 ]
+
+urlpatterns = [
+    path('i18n/', include("django.conf.urls.i18n")),
+    path('admin/', admin.site.urls),
+]
+
+urlpatterns = urlpatterns + i18n_patterns(*i18n_urlpatterns)
 
 if settings.DEBUG:
     from django.conf.urls.static import static
@@ -43,3 +50,8 @@ if settings.DEBUG:
 
     urlpatterns += static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)
+
+if 'rosetta' in settings.INSTALLED_APPS:
+    urlpatterns += [
+        path('rosetta/', include('rosetta.urls'))
+    ]

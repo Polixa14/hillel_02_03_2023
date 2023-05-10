@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.urls import reverse_lazy
 from orders.models import OrderItem
 from django.views.generic import FormView, DeleteView
@@ -5,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from orders.mixins import GetOrderMixin
 from orders.forms import UpdateQuantityCartForm, CartForm, AddProductToCartForm
+from django.utils.translation import gettext_lazy as _
 
 
 class CartView(GetOrderMixin, FormView):
@@ -26,6 +28,7 @@ class CartView(GetOrderMixin, FormView):
     def form_valid(self, form):
         form.instance = self.get_order()
         form.save()
+        messages.success(self.request, _('Discount applied'))
         return super().form_valid(form)
 
 
@@ -46,6 +49,7 @@ class AddProductToCartView(GetOrderMixin, FormView):
 
     def form_valid(self, form):
         form.save()
+        messages.success(self.request, _('Product added to cart'))
         return super().form_valid(form)
 
     def get_form_kwargs(self):
