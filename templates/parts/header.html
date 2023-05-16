@@ -25,7 +25,7 @@
                         <a class="nav-link active" aria-current="page" href="#">{% translate 'About us' %}</a>
                     </li>
                     <li class="nav-item btn-menu">
-                        <a class="nav-link active" href="#">{% translate 'Contacts' %}</a>
+                        <a class="nav-link active" href="{% url 'contact' %}">{% translate 'Contacts' %}</a>
                     </li>
                     <li class="nav-item btn-menu">
                         <a class="nav-link active" href="{% url 'feedbacks' %}">{% translate 'Feedbacks' %}</a>
@@ -36,10 +36,11 @@
                            aria-expanded="false">
                             {% translate 'Catalogue' %}
                         </a>
-                        <div class="dropdown-menu flex-column">
-                            {#                            Добавить #}
-                            <a class="ms-2" href={% url 'categories' %}>{% translate 'Categories' %}</a>
-                        </div>
+                        <ul class="dropdown-menu flex-column">
+                            {% for category in categories %}
+                            <li><a class="ms-2" href={% url 'category_products' category.slug %}>{{ category.name }}</a></li>
+                            {% endfor %}
+                        </ul>
                     </li>
                 </ul>
                 <form id="search-form" method="post" class="d-flex flex-grow-1" role="search">

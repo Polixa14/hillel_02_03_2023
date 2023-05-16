@@ -24,7 +24,7 @@ class FeedBacksView(FormView):
         context = super().get_context_data(**kwargs)
         feedbacks = cache.get(FeedbacksCacheKeys.FEEDBACKS)
         if not feedbacks:
-            feedbacks = Feedback.objects.all()
+            feedbacks = Feedback.objects.all().select_related('user')
             cache.set(FeedbacksCacheKeys.FEEDBACKS, feedbacks)
         context['feedbacks'] = feedbacks
         if not self.request.user.is_authenticated:

@@ -2,42 +2,62 @@
 {% load i18n %}
 {% block title %}{% translate 'Products' %}{% endblock title %}
 {% block content %}
-    <div class="container text-center">
-        <div class="row">
-            {% if request.user.is_authenticated %}
-                <a href="{% url 'export-csv' %}">Export CSV</a>
-            {% endif %}
-            {% if request.user.is_staff %}
-                <a href="{% url 'import-csv' %}">Import CSV</a>
-            {% endif %}
-            {% for product in products %}
-                <div class="col-6 col-lg-3 p-0 card-own">
-                    <div class="card h-100 shoe-card">
-                        <img class="card-img-top" src="{{product.image.url}}" alt="Product image" height="300">
-                        <div class="card-body-new d-flex flex-column">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text text-truncate">{{ product.description }}</p>
-                            <div class="mt-auto align-items-end d-flex justify-content-end">
-                                <span class="me-auto item-price">{{ product.price_in_uah }}₴</span>
-                                <a href="{% url 'details' product.slug %}" class="btn btn-orange mt-auto d-flex justify-content-end">{% translate 'Details' %}</a>
+    <div class="container-fluid me-0 ms-0">
+        <div class="container-fluid">
+            <div class="row">
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'export-csv' %}">Export CSV</a>
+                {% endif %}
+                {% if request.user.is_staff %}
+                    <a href="{% url 'import-csv' %}">Import CSV</a>
+                {% endif %}
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#sidebarMenu" aria-controls="sidebarMenu"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <nav id="sidebarMenu" class="col-3 col-lg-2 d-md-block bg-body-tertiary sidebar collapse">
+                    <ul class="list-group">
+                      <li class="list-group-item">An item</li>
+                      <li class="list-group-item">A second item</li>
+                      <li class="list-group-item">A third item</li>
+                      <li class="list-group-item">A fourth item</li>
+                      <li class="list-group-item">And a fifth one</li>
+                    </ul>
+                </nav>
+                <div class="col-9 col-lg-10 container">
+                    <div class="row">
+                        {% for product in products %}
+                            <div class="col-6 col-lg-3 p-0 card-own">
+                                <div class="card h-100 shoe-card">
+                                    <img class="card-img-top" src="{{product.image.url}}" alt="Product image" height="300">
+                                    <div class="card-body-new d-flex flex-column">
+                                        <h5 class="card-title">{{ product.name }}</h5>
+                                        <p class="card-text text-truncate">{{ product.description }}</p>
+                                        <div class="mt-auto align-items-end d-flex justify-content-end">
+                                            <span class="me-auto item-price">{{ product.price_in_uah }}₴</span>
+                                            <a href="{% url 'details' product.slug %}" class="btn btn-orange mt-auto d-flex justify-content-end">{% translate 'Details' %}</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-center">
-                {% if page_obj.has_previous %}
-                    <li class="page-item"><a class="page-link" href="?page=1">{% translate 'first' %}</a></li>
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% translate 'previous' %}</a></li>
-                {% endif %}
-                <li class="page-item"><a class="page-link" href="#">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
-                {% if page_obj.has_next %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{% translate 'next' %}</a></li>
-                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{% translate 'last' %}</a></li>
-                {% endif %}
-              </ul>
-            </nav>
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?page=1">{% translate 'first' %}</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% translate 'previous' %}</a></li>
+                    {% endif %}
+                    <li class="page-item"><a class="page-link" href="#">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{% translate 'next' %}</a></li>
+                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{% translate 'last' %}</a></li>
+                    {% endif %}
+                  </ul>
+                </nav>
+            </div>
         </div>
     </div>
 {% endblock content %}

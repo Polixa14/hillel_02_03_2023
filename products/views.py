@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from favorites.models import FavoriteProduct
 from products.models import Category, Product
 from products.forms import ImportCSVForm
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 
 
 class ProductsView(ListView):
@@ -26,7 +26,6 @@ class ProductDetailView(DetailView):
             context['user_favorites'] = \
                 [product.product.sku for product
                  in FavoriteProduct.objects.filter(user=self.request.user)]
-
         return context
 
 
@@ -35,8 +34,24 @@ class CategoriesView(ListView):
     context_object_name = 'categories'
 
 
-class CategoryProductsView(TemplateView):
+class CategoryProductsView(ListView):
+    model = Product
     template_name = 'products/category_products.html'
+    paginate_by = 20
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.category = None
+
+    def dispatch(self, request, *args, **kwargs):
+        try:
+            self.category = Category.objects.get(slug=kwargs['slug'])
+        except Category.DoesNotExist:
+            raise Http404
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return super().get_queryset().filter(category__in=(self.category,))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

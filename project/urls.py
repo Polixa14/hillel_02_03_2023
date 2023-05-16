@@ -51,6 +51,8 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)
 
+    urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]
+
 if 'rosetta' in settings.INSTALLED_APPS:
     urlpatterns += [
         path('rosetta/', include('rosetta.urls'))

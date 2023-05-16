@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_extensions',
     'rosetta',
+    'silk',
 
     'products',
     'stocks',
@@ -73,7 +74,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'project.middlewares.TrackingMiddleware',
-    'django.middleware.locale.LocaleMiddleware'
+    'django.middleware.locale.LocaleMiddleware',
+    'silk.middleware.SilkyMiddleware',
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -89,6 +91,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'project.context_processors.slug_categories'
             ],
         },
     },
@@ -185,3 +188,15 @@ CACHES = {
         "LOCATION": "127.0.0.1:11211",
     }
 }
+
+# EMAIL
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = env.str('EMAIL_HOST', default='EMAIL_HOST')
+EMAIL_PORT = env.int('EMAIL_PORT', default='EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER', default='EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD',
+                              default='EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
