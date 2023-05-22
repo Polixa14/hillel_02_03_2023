@@ -62,15 +62,18 @@ class UserProfileEditModelForm(forms.ModelForm):
         fields = ('first_name', 'last_name', 'phone_number')
 
     def clean_phone_number(self):
-        if re.fullmatch(
-                r'^\+?\d{1,4}[-.\s]?[(]?\d{1,4}[)]?[-.\s]?\d{1,3}[-.\s]?\d{1,3}[-.\s]?\d{1,3}$', # noqa
-                self.cleaned_data.get('phone_number')
-        ):
-            return re.sub(
-                r'[-.\s+()]', '', self.cleaned_data.get('phone_number')
-            )
-        else:
-            raise ValidationError(_('Invalid phone number'))
+        try:
+            if re.fullmatch(
+                    r'^\+?\d{0,4}[-.\s]?[(]?\d{2,4}[)]?[-.\s]?\d{2,3}[-.\s]?\d{2,3}[-.\s]?\d{2,3}$', # noqa
+                    self.cleaned_data.get('phone_number')
+            ):
+                return re.sub(
+                    r'[-.\s+()]', '', self.cleaned_data.get('phone_number')
+                )
+            else:
+                raise ValidationError(_('Invalid phone number'))
+        except TypeError:
+            raise ValidationError(_('Phone number field must not be empy'))
 
     def save(self, commit=True):
         self.instance.first_name = self.cleaned_data.get('first_name')

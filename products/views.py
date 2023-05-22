@@ -1,5 +1,5 @@
 import csv
-from django.views.generic import TemplateView, DetailView, View, FormView, \
+from django.views.generic import DetailView, View, FormView, \
     ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.decorators import method_decorator

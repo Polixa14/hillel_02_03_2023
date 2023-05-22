@@ -1,10 +1,9 @@
 from django.urls import path
-from products.views import ProductsView, ProductDetailView, CategoriesView, \
+from products.views import ProductsView, ProductDetailView, \
     ExportCsv, ImportCsv, CategoryProductsView
 
 urlpatterns = [
     path('', ProductsView.as_view(), name='products'),
-    path('categories/', CategoriesView.as_view(), name='categories'),
     path(
         'categories/<slug:slug>/',
         CategoryProductsView.as_view(),

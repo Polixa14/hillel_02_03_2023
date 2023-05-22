@@ -38,5 +38,5 @@ class EmailOrPhoneModelBackend(ModelBackend):
         """
         is_valid = getattr(user, "is_active", True)
         if not is_email:
-            is_valid &= getattr(user, "is_phone_valid", False)
+            is_valid &= getattr(user, "is_phone_number_valid", False)
         return is_valid
