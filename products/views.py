@@ -16,10 +16,6 @@ class ProductsView(ListView):
     context_object_name = 'products'
     paginate_by = 20
 
-    def get(self, request, *args, **kwargs):
-        parce_megasport_task.delay()
-        return super().get(request, *args, **kwargs)
-
 
 class ProductDetailView(DetailView):
     model = Product
