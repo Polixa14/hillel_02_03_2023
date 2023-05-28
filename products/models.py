@@ -4,7 +4,7 @@ from django.db import models
 from currencies.models import CurrencyHistory
 from project.constants import MAX_DIGITS, DECIMAL_PLACES
 from project.mixins.models import PKMixin
-from django.utils.text import slugify
+from slugify import slugify
 from project.model_choices import CurrencyChoices
 
 
@@ -19,7 +19,7 @@ class Category(PKMixin):
         blank=True,
         null=True
     )
-    image = models.ImageField(upload_to=upload_to)
+    image = models.ImageField(upload_to=upload_to, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     slug = models.SlugField(max_length=255, unique=True, null=True, blank=True)
 

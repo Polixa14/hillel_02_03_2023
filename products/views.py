@@ -8,12 +8,17 @@ from favorites.models import FavoriteProduct
 from products.models import Category, Product
 from products.forms import ImportCSVForm
 from django.http import HttpResponse, Http404
+from products.tasks import parce_megasport_task
 
 
 class ProductsView(ListView):
     model = Product
     context_object_name = 'products'
     paginate_by = 20
+
+    def get(self, request, *args, **kwargs):
+        parce_megasport_task.delay()
+        return super().get(request, *args, **kwargs)
 
 
 class ProductDetailView(DetailView):

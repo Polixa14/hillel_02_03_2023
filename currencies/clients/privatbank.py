@@ -1,4 +1,4 @@
-from currencies.clients.base_client import BaseClient
+from project.base_client import BaseClient
 
 
 class PrivatBank(BaseClient):

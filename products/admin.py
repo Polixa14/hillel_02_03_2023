@@ -23,4 +23,4 @@ class CategoryAdmin(admin.ModelAdmin):
     def image_display(self, obj):
         return mark_safe(
             '<img src="{}" width=64, height="64" />'.format(obj.image.url)
-        )
+        ) if obj.image else 'No image'
