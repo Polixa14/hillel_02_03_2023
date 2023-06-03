@@ -8,7 +8,6 @@ from favorites.models import FavoriteProduct
 from products.models import Category, Product
 from products.forms import ImportCSVForm
 from django.http import HttpResponse, Http404
-from products.tasks import parce_megasport_task
 
 
 class ProductsView(ListView):
