@@ -16,16 +16,88 @@
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
                 </button>
-                <nav id="sidebarMenu" class="col-3 col-lg-2 d-md-block bg-body-tertiary sidebar collapse">
-                    <ul class="list-group">
-                      <li class="list-group-item">An item</li>
-                      <li class="list-group-item">A second item</li>
-                      <li class="list-group-item">A third item</li>
-                      <li class="list-group-item">A fourth item</li>
-                      <li class="list-group-item">And a fifth one</li>
-                    </ul>
+                <nav id="sidebarMenu" class="col-2 col-lg-2 d-md-block bg-body-tertiary sidebar collapse">
+                    <form method="get">
+                    {% for field in filter.form %}
+                        {% if field.name == 'price' %}
+                            <div class="row">
+                                <div class="col">
+                                    <label for="{{ field.fields.0.widget.id_for_label }}"
+                                           class="form-label">
+                                        <span> {% translate 'Price from' %} </span>
+                                    </label>
+                                    <input type="{{ field.fields.0.widget.input_type }}" id="{{ field.fields.0.widget.id_for_label }}"
+                                              class="form-control"
+                                              name="price_min"
+                                              value="{{ request.GET.price_min }}">
+                                </div>
+                                <div class="col">
+                                    <label for="{{ field.fields.0.widget.id_for_label }}"
+                                           class="form-label">
+                                        <span> {% translate 'Price to' %} </span>
+                                    </label>
+                                    <input type="{{ field.fields.0.widget.input_type }}" id="{{ field.fields.0.widget.id_for_label }}"
+                                              class="form-control"
+                                              name="price_max"
+                                              value="{{ request.GET.price_max }}">
+                                </div>
+                            </div>
+                        {% elif field.name == 'date' %}
+                            <div class="row">
+                                <div class="col">
+                                    <label for="{{ field.fields.0.widget.id_for_label }}"
+                                           class="form-label">
+                                        <span> {% translate 'Date from' %} </span>
+                                    </label>
+                                    <input type="date" id="{{ field.fields.0.widget.id_for_label }}"
+                                              class="form-control"
+                                              name="date_after"
+                                              value="{{ request.GET.date_after }}">
+                                </div>
+                                <div class="col">
+                                    <label for="{{ field.fields.0.widget.id_for_label }}"
+                                           class="form-label">
+                                        <span> {% translate 'Date to' %} </span>
+                                    </label>
+                                    <input type="date" id="{{ field.fields.0.widget.id_for_label }}"
+                                              class="form-control"
+                                              name="date_before"
+                                              value="{{ request.GET.date_before }}">
+
+                                </div>
+                            </div>
+                        {% elif field.name == 'sku' %}
+                            <div class="row">
+                                <div class="col">
+                                    <label for="{{ field.widget.id_for_label }}"
+                                           class="form-label">
+                                        <span> {{ field.label }} </span>
+                                    </label>
+                                    <input type="{{ field.widget.input_type }}" id="{{ field.widget.id_for_label }}"
+                                              class="form-control"
+                                              name="{{ field.name }}"
+                                              value="{{ request.GET.sku }}">
+                                </div>
+                            </div>
+                        {% elif field.name == 'name' %}
+                            <div class="row">
+                                <div class="col">
+                                    <label for="{{ field.widget.id_for_label }}"
+                                           class="form-label">
+                                        <span> {{ field.label }} </span>
+                                    </label>
+                                    <input type="{{ field.widget.input_type }}" id="{{ field.widget.id_for_label }}"
+                                              class="form-control"
+                                              name="{{ field.name }}"
+                                              value="{{ request.GET.name }}">
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                        <button type="submit" class="btn btn-orange mt-auto d-flex justify-content-end">{% translate 'Filter' %}</button>
+                    </form>
                 </nav>
-                <div class="col-9 col-lg-10 container">
+                <div class="col-10 col-lg-10 container">
                     <div class="row">
                         {% for product in products %}
                             <div class="col-6 col-lg-3 p-0 card-own">
@@ -43,20 +115,21 @@
                             </div>
                         {% endfor %}
                     </div>
+                        <nav aria-label="Page navigation example">
+                          <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?{{ request.GET.urlencode }}&page=1">{% translate 'first' %}</a></li>
+                                <li class="page-item"><a class="page-link" href="?{{ request.GET.urlencode }}&page={{ page_obj.previous_page_number }}">{% translate 'previous' %}</a></li>
+                            {% endif %}
+                            <li class="page-item"><a class="page-link" href="#">{% translate 'Page' %} {{ page_obj.number }} {% translate 'of' %} {{ page_obj.paginator.num_pages }}</a></li>
+                            {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link" href="?{{ request.GET.urlencode }}&page={{ page_obj.next_page_number }}">{% translate 'next' %}</a></li>
+                                <li class="page-item"><a class="page-link" href="?{{ request.GET.urlencode }}&page={{ page_obj.paginator.num_pages }}">{% translate 'last' %}</a></li>
+                            {% endif %}
+                          </ul>
+                        </nav>
                 </div>
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                        <li class="page-item"><a class="page-link" href="?page=1">{% translate 'first' %}</a></li>
-                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{% translate 'previous' %}</a></li>
-                    {% endif %}
-                    <li class="page-item"><a class="page-link" href="#">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a></li>
-                    {% if page_obj.has_next %}
-                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{% translate 'next' %}</a></li>
-                        <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{% translate 'last' %}</a></li>
-                    {% endif %}
-                  </ul>
-                </nav>
+
             </div>
         </div>
     </div>

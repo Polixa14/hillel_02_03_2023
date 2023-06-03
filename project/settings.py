@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rosetta',
     'silk',
+    'django_filters',
 
     'products',
     'stocks',

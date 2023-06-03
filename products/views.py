@@ -8,12 +8,16 @@ from favorites.models import FavoriteProduct
 from products.models import Category, Product
 from products.forms import ImportCSVForm
 from django.http import HttpResponse, Http404
+from django_filters.views import FilterView
+from products.filters import ProductFilter
 
 
-class ProductsView(ListView):
+class ProductsView(FilterView):
     model = Product
     context_object_name = 'products'
     paginate_by = 20
+    filterset_class = ProductFilter
+    template_name = 'products/product_list.html'
 
 
 class ProductDetailView(DetailView):

@@ -5,7 +5,11 @@ from django.utils.safestring import mark_safe
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price', 'is_active', 'image_display')
+    list_display = ('name',
+                    'price',
+                    'is_active',
+                    'image_display',
+                    'created_at')
     filter_horizontal = ('category',)
 
     @admin.display(description='Image')
