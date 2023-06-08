@@ -1,6 +1,4 @@
-from datetime import timedelta
 import django_filters
-from django.utils import timezone
 from products.models import Product
 
 

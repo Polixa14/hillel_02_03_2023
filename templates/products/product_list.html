@@ -21,7 +21,7 @@
                     {% for field in filter.form %}
                         {% if field.name == 'price' %}
                             <div class="row">
-                                <div class="col">
+                                <div class="col-lg-6">
                                     <label for="{{ field.fields.0.widget.id_for_label }}"
                                            class="form-label">
                                         <span> {% translate 'Price from' %} </span>
@@ -31,7 +31,7 @@
                                               name="price_min"
                                               value="{{ request.GET.price_min }}">
                                 </div>
-                                <div class="col">
+                                <div class="col-lg-6">
                                     <label for="{{ field.fields.0.widget.id_for_label }}"
                                            class="form-label">
                                         <span> {% translate 'Price to' %} </span>
@@ -44,7 +44,7 @@
                             </div>
                         {% elif field.name == 'date' %}
                             <div class="row">
-                                <div class="col">
+                                <div class="col-lg-6">
                                     <label for="{{ field.fields.0.widget.id_for_label }}"
                                            class="form-label">
                                         <span> {% translate 'Date from' %} </span>
@@ -54,7 +54,7 @@
                                               name="date_after"
                                               value="{{ request.GET.date_after }}">
                                 </div>
-                                <div class="col">
+                                <div class="col-lg-6">
                                     <label for="{{ field.fields.0.widget.id_for_label }}"
                                            class="form-label">
                                         <span> {% translate 'Date to' %} </span>
@@ -94,7 +94,7 @@
                             </div>
                         {% endif %}
                     {% endfor %}
-                        <button type="submit" class="btn btn-orange mt-auto d-flex justify-content-end">{% translate 'Filter' %}</button>
+                        <button type="submit" class="btn btn-orange mt-3 d-flex justify-content-end">{% translate 'Filter' %}</button>
                     </form>
                 </nav>
                 <div class="col-10 col-lg-10 container">

@@ -24,6 +24,7 @@ from orders.urls import urlpatterns as orders_urlpatterns
 from payments.urls import urlpatterns as payments_urlpatterns
 from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
+from apis.products.urls import urlpatterns as apis_urlpatterns
 
 i18n_urlpatterns = [
     path('products/', include(products_urlpatterns)),
@@ -38,6 +39,7 @@ i18n_urlpatterns = [
 urlpatterns = [
     path('i18n/', include("django.conf.urls.i18n")),
     path('admin/', admin.site.urls),
+    path('api/v1/', include(apis_urlpatterns))
 ]
 
 urlpatterns = urlpatterns + i18n_patterns(*i18n_urlpatterns)
