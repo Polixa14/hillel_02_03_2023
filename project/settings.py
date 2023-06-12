@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'silk',
     'django_filters',
     'rest_framework',
+    'drf_yasg',
 
     'products',
     'stocks',

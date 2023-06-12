@@ -14,7 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
+from django.conf import settings
+from rest_framework.permissions import IsAuthenticated
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
 from accounts.urls import urlpatterns as accounts_urlpatterns
 from feedbacks.urls import urlpatterns as feedbacks_urlpatterns
 from products.urls import urlpatterns as products_urlpatterns
@@ -22,7 +26,6 @@ from main.urls import urlpatterns as main_urlpatterns
 from favorites.urls import urlpatterns as favorite_urlpatterns
 from orders.urls import urlpatterns as orders_urlpatterns
 from payments.urls import urlpatterns as payments_urlpatterns
-from django.conf import settings
 from django.conf.urls.i18n import i18n_patterns
 from apis.products.urls import urlpatterns as apis_urlpatterns
 
@@ -42,7 +45,31 @@ urlpatterns = [
     path('api/v1/', include(apis_urlpatterns))
 ]
 
-urlpatterns = urlpatterns + i18n_patterns(*i18n_urlpatterns)
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Snippets API",
+      default_version='v1',
+      description="Product API",
+      license=openapi.License(name="BSD License"),
+   ),
+   public=False,
+   permission_classes=[IsAuthenticated],
+)
+
+swagger_urlpatterns = [
+   re_path(r'^swagger(?P<format>\.json|\.yaml)$',
+           schema_view.without_ui(cache_timeout=0),
+           name='schema-json'),
+   path('swagger/',
+        schema_view.with_ui('swagger', cache_timeout=0),
+        name='schema-swagger-ui'),
+   path('redoc/',
+        schema_view.with_ui('redoc', cache_timeout=0),
+        name='schema-redoc'),
+]
+
+urlpatterns = urlpatterns + i18n_patterns(*i18n_urlpatterns) + \
+              swagger_urlpatterns
 
 if settings.DEBUG:
     from django.conf.urls.static import static
