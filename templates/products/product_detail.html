@@ -16,20 +16,27 @@
                     <span class="me-auto item-price d-flex justify-content-start">{{ product.price_in_uah }}₴</span>
                     <span class="control-code me-0 d-flex justify-content-end">{% translate 'Article' %}: {{ product.sku }}</span>
                 </div>
-                <div class="mt-2 d-flex justify-content-start">
-                    <form method="post" action="{% url 'add_to_favorite' product.slug %}">
+                <div class="mt-2 align-items-end d-flex">
+                    <form method="post" action="{% url 'add_to_cart' %}" class="me-auto">
                         {% csrf_token %}
                         <input type="hidden" name="product" value="{{ product.id }}">
-                        <button type="submit" class="btn btn-orange mt-auto">{% if product.sku not in user_favorites %}{% translate 'Add to favorite' %}{% else %}{% translate 'Remove from favorites' %}{% endif %}</button>
+                        <button type="submit" class="btn btn-orange me-auto">{% translate 'Add to cart' %}</button>
                     </form>
-                    <form method="post" action="{% url 'add_to_cart' %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="product" value="{{ product.id }}">
-                        <button type="submit" class="btn btn-orange mt-auto">{% translate 'Add to cart' %}</button>
-                    </form>
+                    <a href="javascript:void(0)" class="favourite-link" data-url="{% url "add_to_favorite" product.id %}">
+                        <i class="bi {% if product.is_favorite %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                    </a>
                 </div>
 
             </div>
         </div>
     </div>
 {% endblock content %}
+{% block extra_scripts %}
+        <script>
+        $(document).ready(function () {
+                $('.favourite-link').click(function () {
+                    add_or_remove_favorite($(this))
+                })
+            })
+        </script>
+{% endblock extra_scripts %}

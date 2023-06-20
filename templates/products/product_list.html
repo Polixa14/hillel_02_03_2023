@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load i18n %}
 {% block title %}{% translate 'Products' %}{% endblock title %}
 {% block content %}
@@ -104,11 +105,17 @@
                                 <div class="card h-100 shoe-card">
                                     <img class="card-img-top" src="{{product.image.url}}" alt="Product image" height="300">
                                     <div class="card-body-new d-flex flex-column">
-                                        <h5 class="card-title">{{ product.name }}</h5>
+                                        <div class="mt-auto align-items-end d-flex justify-content-end">
+                                            <h5 class="card-title me-auto">{{ product.name }}</h5>
+                                            <a href="javascript:void(0)" class="favourite-link" data-url="{% url "add_to_favorite" product.id %}">
+                                                <i class="bi {% if product.is_favorite %}bi-heart-fill{% else %}bi-heart{% endif %}"></i>
+                                            </a>
+                                        </div>
                                         <p class="card-text text-truncate">{{ product.description }}</p>
                                         <div class="mt-auto align-items-end d-flex justify-content-end">
                                             <span class="me-auto item-price">{{ product.price_in_uah }}₴</span>
                                             <a href="{% url 'details' product.slug %}" class="btn btn-orange mt-auto d-flex justify-content-end">{% translate 'Details' %}</a>
+
                                         </div>
                                     </div>
                                 </div>
@@ -134,3 +141,12 @@
         </div>
     </div>
 {% endblock content %}
+{% block extra_scripts %}
+        <script>
+        $(document).ready(function () {
+                $('.favourite-link').click(function () {
+                    add_or_remove_favorite($(this))
+                })
+            })
+        </script>
+{% endblock extra_scripts %}

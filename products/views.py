@@ -1,4 +1,5 @@
 import csv
+from django.db.models import OuterRef, Exists
 from django.views.generic import DetailView, View, FormView, \
     ListView
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -19,10 +20,25 @@ class ProductsView(FilterView):
     filterset_class = ProductFilter
     template_name = 'products/product_list.html'
 
+    def get_queryset(self):
+        favorites = FavoriteProduct.objects.filter(
+            product=OuterRef('pk'),
+            user=self.request.user
+        )
+        return super().get_queryset().annotate(is_favorite=Exists(favorites))
+
 
 class ProductDetailView(DetailView):
     model = Product
     context_object_name = 'product'
+
+    def get_object(self, queryset=None):
+        favorites = FavoriteProduct.objects.filter(
+            product=OuterRef('pk'),
+            user=self.request.user
+        )
+        queryset = self.get_queryset().annotate(is_favorite=Exists(favorites))
+        return super().get_object(queryset)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
