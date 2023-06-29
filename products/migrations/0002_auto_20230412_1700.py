@@ -28,8 +28,7 @@ def start(apps, schema_editor):
             sku=fake.random_number(),
             price=fake.pydecimal(left_digits=3, right_digits=2, positive=True),
         )
-        category = Category.objects.\
-            filter(name='sneakers').values_list('id', flat=True).first()
+        category, _ = Category.objects.get_or_create(name='sneakers')
         product.category.add(category)
 
 

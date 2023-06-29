@@ -34,11 +34,12 @@ SECRET_KEY = env('SECRET_KEY', default='1111')
 DEBUG = env.bool('DEBUG', default=True)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
-
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -101,18 +102,28 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'project.wsgi.application'
-
+ASGI_APPLICATION = 'project.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": 'django.db.backends.postgresql',
+        "NAME": env("SQL_DATABASE", default="SQL_DATABASE"),
+        "USER": env("SQL_USER", default="SQL_USER"),
+        "PASSWORD": env("SQL_PASSWORD", default="SQL_PASSWORD"),
+        "HOST": env("SQL_HOST", default="SQL_HOST"),
+        "PORT": env("SQL_PORT", default="5432"),
     }
 }
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.sqlite3",
+#         "NAME": BASE_DIR / "db.sqlite3",
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -194,21 +205,21 @@ CELERY_BEAT_SCHEDULE = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.memcached.PyMemcacheCache",
-        "LOCATION": "127.0.0.1:11211",
+        "LOCATION": "memcached:11211",
     }
 }
 
 # EMAIL
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = env.str('EMAIL_HOST', default='EMAIL_HOST')
-EMAIL_PORT = env.int('EMAIL_PORT', default='EMAIL_PORT')
-EMAIL_HOST_USER = env.str('EMAIL_HOST_USER', default='EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD',
-                              default='EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
-SERVER_EMAIL = EMAIL_HOST_USER
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = env.str('EMAIL_HOST', default='EMAIL_HOST')
+# EMAIL_PORT = env.int('EMAIL_PORT', default='EMAIL_PORT')
+# EMAIL_HOST_USER = env.str('EMAIL_HOST_USER', default='EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD',
+#                               default='EMAIL_HOST_PASSWORD')
+# EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', default=True)
+# SERVER_EMAIL = EMAIL_HOST_USER
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-if DEBUG:
-    from project.settings_local import *    # noqa
+# if DEBUG:
+#     from project.settings_local import *    # noqa
